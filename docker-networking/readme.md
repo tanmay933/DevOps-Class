@@ -44,7 +44,7 @@ network driver.
 
 ### Screenshot
 
-![Docker Networks](images/Screenshot%202026-08-31%20at%206.47.16%20PM%281%29.png)
+![Docker Networks](images/networks.png)
 
 ---
 
@@ -160,7 +160,7 @@ mysqld is alive
 
 ### Screenshot
 
-![Container Connectivity](images/Screenshot%202026-08-31%20at%206.56.15%20PM%281%29.png)
+![Container Connectivity](images/connectivity.png)
 
 ---
 
@@ -210,7 +210,7 @@ the Apache server was functioning correctly.
 
 ### Screenshot
 
-![Apache Host Network](images/Screenshot%202026-08-31%20at%207.01.29%20PM.png)
+![Apache Host Network](images/apache.png)
 
 ---
 
@@ -252,7 +252,7 @@ Hello students
 
 ### Before Modification
 
-![Bind Mount Before](images/Screenshot%202026-08-31%20at%207.07.43%20PM.png)
+![Bind Mount Before](images/bind-mount-before.png)
 
 ---
 
@@ -277,7 +277,7 @@ the container because the directory is bind mounted.
 
 ### After Modification
 
-![Bind Mount After](images/Screenshot%202026-08-31%20at%207.08.25%20PM.png)
+![Bind Mount After](images/bind-mount-after.png)
 
 ---
 
