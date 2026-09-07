@@ -486,11 +486,11 @@ Ctrl + C
 
 ## Pod and Service
 
-![Kubernetes Pod and Service](../screenshots/k8s-pod-service.png)
+![Kubernetes Pod and Service](./screenshots/k8s-pod-service.png)
 
 ## Debugging and Port Forwarding
 
-![Kubernetes Debugging and Port Forwarding](../screenshots/k8s-debugging.png)
+![Kubernetes Debugging and Port Forwarding](./screenshots/k8s-debugging.png)
 
 ---
 
