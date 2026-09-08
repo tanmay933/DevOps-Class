@@ -3,6 +3,11 @@ kind: Pod
 
 metadata:
   name: nginx-pod
+<<<<<<< HEAD
+=======
+  labels:
+    app: nginx
+>>>>>>> d073189b9df231b9f6dd240e3f9268fc046ade6a
 
 spec:
   containers:
