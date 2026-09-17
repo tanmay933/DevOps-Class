@@ -95,7 +95,7 @@ INFO
 
 ### ConfigMap Demo
 
-![ConfigMap Demo](../images/configmap-demo.png)
+![ConfigMap Demo](images/configmap-demo.png)
 
 ---
 
@@ -183,7 +183,7 @@ kubectl get secret yatri-db-secret -o jsonpath='{.data.POSTGRES_PASSWORD}' | bas
 
 ### Secret Demo
 
-![Secret Demo](../images/secret-demo.png)
+![Secret Demo](images/secret-demo.png)
 
 ---
 
@@ -532,7 +532,7 @@ kubectl get secret yatri-db-secret -o jsonpath='{.data.POSTGRES_PASSWORD}' | bas
 
 ## Full Demo Output
 
-![Full Demo](../images/full-demo.png)
+![Full Demo](images/full-demo.png)
 
 ---
 
