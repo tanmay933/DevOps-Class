@@ -1016,7 +1016,7 @@ Output:
 version=v2
 ```
 
-![Rollback Verification](./screenshots/rollback-to-v2.png)
+![Rollback Verification](./screenshots/rollback-to-v1.png)
 
 ## 5. Key Observation
 
