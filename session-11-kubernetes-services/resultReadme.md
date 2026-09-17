@@ -113,7 +113,7 @@ The Service was accessed using its Kubernetes DNS name:
 
 The nginx HTML response confirmed successful communication.
 
-![ClusterIP verification](<images/Screenshot 2026-09-15 at 6.06.00 PM.png>)
+![ClusterIP verification](images/Screenshot%202026-09-15%20at%206.06.00%20PM.png)
 
 ### Port Forwarding
 
@@ -197,7 +197,7 @@ The NodePort itself was verified from inside the Minikube node:
 
 The nginx response confirmed that the NodePort routing was working.
 
-![NodePort verification](<images/Screenshot 2026-09-15 at 6.27.43 PM.png>)
+![NodePort verification](images/Screenshot%202026-09-15%20at%206.27.43%20PM.png)
 
 Minikube can also provide a host-accessible URL:
 
@@ -251,7 +251,7 @@ there is no cloud provider automatically provisioning an external load balancer.
 
 The Service still receives a ClusterIP and internally behaves as a Service endpoint.
 
-![LoadBalancer verification](<images/Screenshot 2026-09-15 at 6.42.21 PM.png>)
+![LoadBalancer verification](images/Screenshot%202026-09-15%20at%206.42.21%20PM.png)
 
 ---
 
@@ -316,7 +316,7 @@ CoreDNS returned:
 
 This confirms that the Kubernetes Service is acting as a DNS alias.
 
-![ExternalName DNS verification](<images/Screenshot 2026-09-15 at 6.51.29 PM.png>)
+![ExternalName DNS verification](images/Screenshot%202026-09-15%20at%206.51.29%20PM.png)
 
 ### Important Point
 
@@ -388,7 +388,7 @@ The Headless Service showed:
 
     web-service-headless   ClusterIP   None   <none>   80/TCP
 
-![Headless Service verification](<images/Screenshot 2026-09-15 at 7.10.55 PM.png>)
+![Headless Service verification](images/Screenshot%202026-09-15%20at%207.10.55%20PM.png)
 
 ### Pod-Specific DNS
 
@@ -409,7 +409,7 @@ The Pod was then accessed using its DNS name:
 
 The nginx response confirmed successful direct Pod communication.
 
-![Headless Pod DNS and direct access](<images/Screenshot 2026-09-15 at 6.55.23 PM.png>)
+![Headless Pod DNS and direct access](images/Screenshot%202026-09-15%20at%206.55.23%20PM.png)
 
 ### Important Point
 
