@@ -892,3 +892,147 @@ kubectl delete
 ```
 
 These commands form the basic workflow for working with Kubernetes workloads.
+
+# Rolling Update, Rollout History, and Rollback
+
+Practice notes on Kubernetes Deployment rolling updates, rollout status tracking, revision history, and rollback mechanics using the `app-rolling` Deployment.
+
+## 1. Triggering a Rolling Update
+
+The Deployment was initially running version `v1`. 
+
+Update the Deployment:
+
+```bash
+kubectl apply -f deployment-v2.yaml
+```
+
+Kubernetes gradually creates Pods running the new version while terminating old Pods. Verify Pod labels during transition:
+
+```bash
+kubectl get pods -l app=app-rolling --show-labels
+```
+
+During the update, both versions temporarily coexist:
+
+```text
+version=v1
+version=v2
+```
+
+![Rolling Update from v1 to v2](./screenshots/rolling-update-v1-to-v2.png)
+
+## 2. Checking Rollout Status
+
+Monitor the progress of the rolling update:
+
+```bash
+kubectl rollout status deployment/app-rolling
+```
+
+Expected output upon successful completion:
+
+```text
+deployment "app-rolling" successfully rolled out
+```
+
+Verify that all active Pods run the new version:
+
+```bash
+kubectl get pods -l app=app-rolling --show-labels
+```
+
+Output:
+
+```text
+version=v2
+```
+
+![Rollout Status and v2 Verification](./screenshots/rollout-status-v2.png)
+
+## 3. Checking Rollout History
+
+Kubernetes maintains a revision history for Deployments:
+
+```bash
+kubectl rollout history deployment/app-rolling
+```
+
+Output displaying available revisions:
+
+```text
+REVISION   CHANGE-CAUSE
+1          <none>
+2          <none>
+```
+
+Subsequent updates generate additional revision indices:
+
+```text
+REVISION   CHANGE-CAUSE
+4          <none>
+5          <none>
+6          <none>
+7          <none>
+```
+
+![Rollout History and Rollback](./screenshots/rollout-history-and-rollback.png)
+
+## 4. Rolling Back a Deployment
+
+Attempting to roll back to a purged revision (`1`):
+
+```bash
+kubectl rollout undo deployment/app-rolling --to-revision=1
+```
+
+Fails if the revision is no longer stored in the history cache:
+
+```text
+error: unable to find specified revision 1 in history
+```
+
+Roll back to an active available revision (`4`):
+
+```bash
+kubectl rollout undo deployment/app-rolling --to-revision=4
+```
+
+Confirmation:
+
+```text
+deployment.apps/app-rolling rolled back
+```
+
+Verify the active Pod labels post-rollback:
+
+```bash
+kubectl get pods -l app=app-rolling --show-labels
+```
+
+Output:
+
+```text
+version=v2
+```
+
+![Rollback Verification](./screenshots/rollback-to-v2.png)
+
+## 5. Key Observation
+
+A **Deployment revision number does not automatically equal the application version tag**. 
+
+In this exercise:
+* **Revision 4** -> `version=v2`
+
+Do not assume Revision 1 matches `v1` or Revision 2 matches `v2`. Always inspect active revisions with `kubectl rollout history` before targeting a rollback index.
+
+## Command Reference
+
+| Action | Command |
+| :--- | :--- |
+| **Check Progress** | `kubectl rollout status deployment/app-rolling` |
+| **View History** | `kubectl rollout history deployment/app-rolling` |
+| **Undo (Previous)** | `kubectl rollout undo deployment/app-rolling` |
+| **Undo (Targeted)** | `kubectl rollout undo deployment/app-rolling --to-revision=4` |
+| **Verify Pods** | `kubectl get pods -l app=app-rolling --show-labels` |
