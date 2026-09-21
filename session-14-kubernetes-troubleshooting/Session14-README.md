@@ -1,5 +1,10 @@
-# Session 14 — Kubernetes Troubleshooting
+## Session 14 Execution Verification
 
+The following screenshot shows the Kubernetes Pods created and tested during this session. Most troubleshooting exercises are currently running successfully, while `dns-test` is intentionally showing `ImagePullBackOff` as part of the troubleshooting exercise.
+
+![Session 14 Pods Verification](./images/AllPods.png)
+
+---
 This session focuses on using `kubectl` to inspect Kubernetes resources, understand Pod lifecycle information, inspect logs and events, execute commands inside Pods, and troubleshoot common workload problems.
 
 ## Session Structure
