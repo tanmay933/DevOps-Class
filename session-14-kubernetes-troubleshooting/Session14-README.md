@@ -957,10 +957,347 @@ The two homework tasks were also included: practicing `kubectl cp` and documenti
 
 ---
 
+# Kubernetes Troubleshooting Mini Project
+
+## Screenshots
+
+### 1. Deployment and Pods
+
+![Deployment and Pods](./images/01-deployment-and-pods.png)
+
+### 2. Broken Pod and Service Endpoints
+
+![Broken Pod and Service Endpoints](./images/02-broken-pod-and-service-endpoints.png)
+
+### 3. Pod Exec and Service Description
+
+![Pod Exec and Service Description](./images/03-pod-exec-and-service-describe.png)
+
+### 4. Troubleshooting and Service Fix
+
+![Troubleshooting and Service Fix](./images/04-troubleshooting-and-service-fix.png)
+
+## Project Objective
+
+This mini project demonstrates a practical Kubernetes troubleshooting workflow:
+
+```text
+Deploy
+  ↓
+Observe
+  ↓
+Break
+  ↓
+Investigate
+  ↓
+Find Root Cause
+  ↓
+Fix
+  ↓
+Verify
+```
+
+The project uses an Nginx Deployment, a ClusterIP Service, and an intentionally broken Pod.
+
+## 1. Project Files
+
+```text
+mini-project/
+├── deployment.yaml
+├── service.yaml
+├── broken-pod.yaml
+├── README.md
+└── images/
+    ├── 01-deployment-and-pods.png
+    ├── 02-broken-pod-and-service-endpoints.png
+    ├── 03-pod-exec-and-service-describe.png
+    └── 04-troubleshooting-and-service-fix.png
+```
+
+## 2. Deploy The Application
+
+Applied the Deployment:
+
+```bash
+kubectl apply -f deployment.yaml
+```
+
+Then checked the Pods:
+
+```bash
+kubectl get pods
+```
+
+The Deployment created two Nginx Pods, both reaching the Running state.
+
+## 3. Test The Application
+
+A running application Pod was accessed using:
+
+```bash
+kubectl exec -it <pod-name> -- bash
+```
+
+Inside the container:
+
+```bash
+curl localhost
+```
+
+The Nginx welcome page was returned, confirming that the application itself was working correctly.
+
+## 4. Investigate The Service
+
+The Service was checked using:
+
+```bash
+kubectl get service
+```
+
+and:
+
+```bash
+kubectl describe service troubleshooting-service
+```
+
+The Service configuration showed:
+
+```yaml
+Selector:    app=troubleshooting-app
+TargetPort:  80/TCP
+```
+
+The Service initially had endpoints corresponding to the two application Pods.
+
+## 5. Check Service Endpoints
+
+The endpoints were checked with:
+
+```bash
+kubectl get endpoints troubleshooting-service
+```
+
+The working Service showed two Pod IP addresses:
+
+```text
+10.244.0.19:80
+10.244.0.20:80
+```
+
+This confirms that the Service selector successfully matched the application Pods.
+
+> **Note:** Kubernetes displayed a warning that the v1 Endpoints API is deprecated in Kubernetes v1.33+ and recommends `discovery.k8s.io/v1` EndpointSlice.
+
+## 6. Broken Pod Investigation
+
+The intentionally broken Pod was created with:
+
+```bash
+kubectl apply -f broken-pod.yaml
+```
+
+The Pod used the image:
+
+```yaml
+image: nginx:this-tag-does-not-exist
+```
+
+The Pod entered an image-pull failure state.
+
+```bash
+kubectl get pod project-broken-pod
+```
+
+To investigate the root cause:
+
+```bash
+kubectl describe pod project-broken-pod
+```
+
+The Events section showed:
+
+```text
+Failed to pull image "nginx:this-tag-does-not-exist"
+```
+
+and:
+
+```text
+Error: ErrImagePull
+```
+
+The root cause was that the specified image tag does not exist.
+
+## 7. Broken Pod Root Cause
+
+| Question | Answer |
+|---|---|
+| Pod status | ErrImagePull / image pull failure |
+| Actual error | Kubernetes failed to pull the specified image |
+| Command used | `kubectl describe pod project-broken-pod` |
+| Problem with image | `nginx:this-tag-does-not-exist` is not a valid existing image tag |
+| Fix | Replace it with a valid image such as `nginx:1.27` |
+
+## 8. Service Selector Troubleshooting
+
+The Service was intentionally configured with an incorrect selector during troubleshooting.
+
+The working selector is:
+
+```yaml
+selector:
+  app: troubleshooting-app
+```
+
+When the selector does not match the Pod labels, the Service has no backend endpoints.
+
+This can be checked using:
+
+```bash
+kubectl get endpoints troubleshooting-service
+```
+
+The broken state showed:
+
+```text
+troubleshooting-service   <none>
+```
+
+This means the Service could not find any matching Pods.
+
+## 9. Finding The Service Root Cause
+
+The Service was inspected with:
+
+```bash
+kubectl describe service troubleshooting-service
+```
+
+The important relationship is:
+
+```text
+Pod label
+    ↓
+app=troubleshooting-app
+
+Service selector
+    ↓
+app=troubleshooting-app
+```
+
+When these values do not match, Kubernetes does not add the Pods as Service endpoints.
+
+After restoring the correct Service configuration, the Service again showed the Pod IP addresses as endpoints.
+
+## 10. Troubleshooting Table
+
+| Problem | What I Saw | Command I Used | Root Cause | Fix |
+|---|---|---|---|---|
+| Broken Pod | ErrImagePull | `kubectl describe pod project-broken-pod` | Invalid image tag | Use a valid Nginx image |
+| Service Problem | `<none>` endpoints | `kubectl get endpoints troubleshooting-service` | Selector did not match Pod labels | Correct the Service selector |
+| Image Problem | Image pull failure | `kubectl describe pod project-broken-pod` | `nginx:this-tag-does-not-exist` does not exist | Change to a valid image tag |
+
+## 11. Important Troubleshooting Commands
+
+**Pods**
+
+```bash
+kubectl get pods
+kubectl get pods -o wide
+kubectl describe pod <pod-name>
+kubectl logs <pod-name>
+kubectl exec -it <pod-name> -- bash
+```
+
+**Events**
+
+```bash
+kubectl get events
+kubectl events
+```
+
+**Services**
+
+```bash
+kubectl get service
+kubectl describe service <service-name>
+kubectl get endpoints <service-name>
+```
+
+**Labels**
+
+```bash
+kubectl get pods --show-labels
+```
+
+## 12. Troubleshooting Questions
+
+**1. What does `kubectl get` tell us?**
+
+It provides a quick overview of Kubernetes resources and their current status.
+
+**2. What is the difference between `get` and `describe`?**
+
+`get` provides a concise resource summary, while `describe` provides detailed information including configuration, status, and events.
+
+**3. Why do we use `kubectl logs`?**
+
+To inspect the output produced by a container and help identify application-level problems.
+
+**4. When would you use `kubectl exec`?**
+
+When direct interaction with a running container is required, such as testing files, commands, networking, or application responses.
+
+**5. What does `CrashLoopBackOff` mean?**
+
+It indicates that a container is repeatedly crashing and Kubernetes is progressively increasing the delay before restarting it.
+
+**6. What does `ImagePullBackOff` mean?**
+
+It means Kubernetes failed to pull a container image and is backing off before retrying.
+
+**7. Why can a Pod remain `Pending`?**
+
+A Pod can remain Pending when Kubernetes cannot successfully schedule it, for example because of insufficient resources or scheduling constraints.
+
+**8. Why can a Service have no endpoints?**
+
+Usually because the Service selector does not match the labels on any Pods.
+
+**9. What is the relationship between a Service selector and Pod labels?**
+
+The Service selector determines which Pods become Service backends. The selector must match the corresponding Pod labels.
+
+**10. What is Kubernetes DNS?**
+
+Kubernetes DNS allows applications inside the cluster to discover Services using DNS names instead of directly using Service IP addresses.
+
+## 13. Final Troubleshooting Mindset
+
+When something breaks, do not guess.
+
+```text
+GET
+ ↓
+DESCRIBE
+ ↓
+EVENTS
+ ↓
+LOGS
+ ↓
+EXEC
+ ↓
+TEST
+ ↓
+FIX
+ ↓
+VERIFY
+```
+
+This project demonstrates how Kubernetes troubleshooting can be approached systematically by observing the resource, finding evidence, identifying the root cause, applying a fix, and verifying the result.
+
 ## Author
 
-**Tanmay Mittal**  
-Scaler School of Technology  
-Roll no - 24BCS10491
+**Tanmay Mittal**
 
----
+Scaler School of Technology
