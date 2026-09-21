@@ -1,4 +1,5 @@
-## Session 14 Execution Verification
+## Session 14 
+Execution Verification
 
 The following screenshot shows the Kubernetes Pods created and tested during this session. Most troubleshooting exercises are currently running successfully, while `dns-test` is intentionally showing `ImagePullBackOff` as part of the troubleshooting exercise.
 
