@@ -6,7 +6,7 @@ metadata:
 
 spec:
   selector:
-    app: web-asd
+    app: web-ahsgdf
 
   ports:
     - port: 80
