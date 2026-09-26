@@ -727,12 +727,6 @@ helm uninstall
 
 ---
 
-## Notes
-
-- All images are referenced from `./images/` — make sure that folder is committed to the repository, otherwise the image links will break on GitHub.
-- Code fences, tables, and headings have been checked for valid GitHub Markdown rendering.
-
----
 
 ## Author
 
