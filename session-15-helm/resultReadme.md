@@ -11,6 +11,54 @@ A hands-on session covering **Helm**, the package manager for Kubernetes — cha
 
 ---
 
+## Personal Execution Notes
+
+This documentation reflects my actual execution environment and troubleshooting.
+
+- Environment: macOS on Apple Silicon
+- Machine: MacBook Air
+- Kubernetes environment: Minikube
+- Container runtime: Docker
+- Helm version: `v4.3.0`
+- Kubernetes client version: `v1.37`
+- Helm charts tested using the local Minikube cluster
+- Bitnami NGINX chart was tested using Helm
+- Custom Helm charts were created and tested locally
+- `helm upgrade --install` was tested for an existing custom release
+- The Notes application was deployed using the `notes-chart` Helm chart
+- Development configuration used `1` replica with `nginx:1.24`
+- Production configuration used `3` replicas with `nginx:1.25`
+- Helm release history was verified using `helm history`
+- A failed upgrade was simulated using a non-existent image tag
+- The failed upgrade resulted in `ImagePullBackOff`
+- The application was successfully restored using Helm rollback to revision `2`
+
+### Troubleshooting Notes
+
+During the Helm exercises, deleting Kubernetes resources with `kubectl delete all --all` did not remove the corresponding Helm release.
+
+Helm still retained the release, so attempting to reuse the same release name produced:
+
+`cannot reuse a name that is still in use`
+
+The Helm release must be removed separately using:
+
+`helm uninstall <release-name>`
+
+During the Notes application exercise, the failed upgrade produced:
+
+`ImagePullBackOff`
+
+The previous healthy release was restored using:
+
+`helm rollback notes-dev 2`
+
+## Notes
+
+- All images are referenced from `./images/` — make sure that folder is committed to the repository, otherwise the image links will break on GitHub.
+- The screenshots in this README use paths relative to `resultReadme.md`.
+- Helm chart versions and command output may differ when executed on another system or with newer chart versions.
+- Code fences, tables, headings, and image paths have been checked for valid GitHub Markdown rendering.
 
 ## Overview
 
