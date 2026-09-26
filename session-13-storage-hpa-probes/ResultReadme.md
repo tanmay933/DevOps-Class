@@ -959,6 +959,40 @@ The practical work demonstrated:
 
 ---
 
+## Personal Execution Notes
+
+This documentation reflects my actual execution environment and troubleshooting.
+
+- Environment: macOS on Apple Silicon
+- Kubernetes environment: Minikube
+- Container runtime: Docker
+- `hostPath` mount tested using `/tmp/hostpath-data`
+- Container mount path tested using `/tanmay`
+- `emptyDir` data was verified to disappear after Pod deletion
+- Persistent storage was verified by recreating `storage-demo` and recovering `data.txt`
+- StorageClass dynamically created a `500Mi` PV for `dynamic-pvc`
+- HPA initially reported `cpu: <unknown>/50%` while Metrics Server was unavailable
+- After enabling the Minikube Metrics Server addon, HPA reported `78%/50%` and scaled from `1` to `2` replicas
+
+
+### Troubleshooting Notes
+
+During the HPA experiment, the HPA initially reported:
+
+`cpu: <unknown>/50%`
+
+because the Metrics API was not yet available.
+
+Metrics Server was enabled using:
+
+`minikube addons enable metrics-server`
+
+After metrics became available, the HPA reported:
+
+`cpu: 78%/50%`
+
+and increased replicas from `1` to `2`.
+
 ## Notes
 
 - All images are referenced from `./images/` — make sure that folder is committed to the repository, otherwise the image links will break on GitHub.
