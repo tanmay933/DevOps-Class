@@ -1,10 +1,10 @@
 resource "aws_vpc" "main" {
-  cidr_block           = "10.0.0.0/16"
+  cidr_block           = "10.69.0.0/16"
   enable_dns_support   = true
   enable_dns_hostnames = true
 
   tags = {
-    Name      = "session19-vpc"
+    Name      = "doomlord-vpc"
     Session   = "19"
     ManagedBy = "Terraform"
   }
@@ -12,14 +12,28 @@ resource "aws_vpc" "main" {
 
 resource "aws_subnet" "public" {
   vpc_id                  = aws_vpc.main.id
-  cidr_block              = "10.0.1.0/24"
+  cidr_block              = "10.69.1.0/24"
   availability_zone       = "${var.aws_region}a"
   map_public_ip_on_launch = true
 
   tags = {
-    Name      = "session19-public-subnet"
+    Name      = "doomlord-public-subnet"
     Session   = "19"
     ManagedBy = "Terraform"
+    Type      = "Public"
+  }
+}
+
+resource "aws_subnet" "private" {
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = "10.69.2.0/24"
+  availability_zone = "${var.aws_region}a"
+
+  tags = {
+    Name      = "doomlord-private-subnet"
+    Session   = "19"
+    ManagedBy = "Terraform"
+    Type      = "Private"
   }
 }
 
@@ -27,7 +41,7 @@ resource "aws_internet_gateway" "main" {
   vpc_id = aws_vpc.main.id
 
   tags = {
-    Name      = "session19-igw"
+    Name      = "doomlord-igw"
     Session   = "19"
     ManagedBy = "Terraform"
   }
@@ -38,11 +52,11 @@ resource "aws_route_table" "public" {
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id  = aws_internet_gateway.main.id
+    gateway_id = aws_internet_gateway.main.id
   }
 
   tags = {
-    Name      = "session19-public-rt"
+    Name      = "doomlord-public-rt"
     Session   = "19"
     ManagedBy = "Terraform"
   }
@@ -53,9 +67,24 @@ resource "aws_route_table_association" "public" {
   route_table_id = aws_route_table.public.id
 }
 
+resource "aws_route_table" "private" {
+  vpc_id = aws_vpc.main.id
+
+  tags = {
+    Name      = "doomlord-private-rt"
+    Session   = "19"
+    ManagedBy = "Terraform"
+  }
+}
+
+resource "aws_route_table_association" "private" {
+  subnet_id      = aws_subnet.private.id
+  route_table_id = aws_route_table.private.id
+}
+
 resource "aws_security_group" "web" {
-  name        = "session19-web-sg"
-  description = "Security group for Session 19 web traffic"
+  name        = "doomlord-web-sg"
+  description = "Security group for DoomLord web traffic"
   vpc_id      = aws_vpc.main.id
 
   ingress {
@@ -83,7 +112,35 @@ resource "aws_security_group" "web" {
   }
 
   tags = {
-    Name      = "session19-web-sg"
+    Name      = "doomlord-web-sg"
+    Session   = "19"
+    ManagedBy = "Terraform"
+  }
+}
+
+resource "aws_security_group" "internal" {
+  name        = "doomlord-internal-sg"
+  description = "Internal traffic for DoomLord private network"
+  vpc_id      = aws_vpc.main.id
+
+  ingress {
+    description = "Allow traffic from DoomLord VPC"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["10.69.0.0/16"]
+  }
+
+  egress {
+    description = "Allow outbound IPv4"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name      = "doomlord-internal-sg"
     Session   = "19"
     ManagedBy = "Terraform"
   }

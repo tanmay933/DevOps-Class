@@ -4,7 +4,7 @@ resource "aws_vpc" "main" {
   enable_dns_hostnames = true
 
   tags = {
-    Name      = "session19-mini-vpc"
+    Name      = "Tanmay-vpc"
     Session   = "19"
     ManagedBy = "Terraform"
   }
@@ -17,7 +17,7 @@ resource "aws_subnet" "public" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name      = "session19-mini-public-subnet"
+    Name      = "Tanmay-public-subnet"
     Session   = "19"
     ManagedBy = "Terraform"
   }
@@ -27,7 +27,7 @@ resource "aws_internet_gateway" "main" {
   vpc_id = aws_vpc.main.id
 
   tags = {
-    Name      = "session19-mini-igw"
+    Name      = "Tanmay-igw"
     Session   = "19"
     ManagedBy = "Terraform"
   }
@@ -38,11 +38,11 @@ resource "aws_route_table" "public" {
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id  = aws_internet_gateway.main.id
+    gateway_id = aws_internet_gateway.main.id
   }
 
   tags = {
-    Name      = "session19-mini-public-rt"
+    Name      = "Tanmay-public-rt"
     Session   = "19"
     ManagedBy = "Terraform"
   }
@@ -54,8 +54,8 @@ resource "aws_route_table_association" "public" {
 }
 
 resource "aws_security_group" "web" {
-  name        = "session19-mini-web-sg"
-  description = "Allow HTTP and HTTPS for Session 19"
+  name        = "Tanmay-web-sg"
+  description = "Allow HTTP and HTTPS for Tanmay Session 19 project"
   vpc_id      = aws_vpc.main.id
 
   ingress {
@@ -83,7 +83,7 @@ resource "aws_security_group" "web" {
   }
 
   tags = {
-    Name      = "session19-mini-web-sg"
+    Name      = "Tanmay-web-sg"
     Session   = "19"
     ManagedBy = "Terraform"
   }
