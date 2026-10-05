@@ -447,6 +447,8 @@ The repository-level workflow used for the final execution is:
 .github/workflows/session16-ci.yml
 ```
 
+The project-level workflow inside `10-final-cicd-pipeline/` is `ci.yml`, while the repository-level workflow that actually executes on GitHub is `session16-ci.yml`.
+
 ---
 
 # 15. Important GitHub Actions Concepts
@@ -521,6 +523,7 @@ The final pipeline successfully automated testing, building, security validation
 ## Notes
 
 - All images are referenced from `./images/` — make sure that folder is committed to the repository, otherwise the image links will break on GitHub.
+- Both workflow paths are documented: the project-level `ci.yml` inside `10-final-cicd-pipeline/` and the repository-level `session16-ci.yml` that actually runs on GitHub.
 - Code fences, tables, and headings have been checked for valid GitHub Markdown rendering.
 
 ---
