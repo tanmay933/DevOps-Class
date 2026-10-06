@@ -263,7 +263,7 @@ It:
 
 The configuration was successfully initialized.
 
-![Terraform Init, Format and Validate](./images/01-terraform-init-fmt-validate.png)
+![Terraform Init, Format and Validate](./terraform-s3-demo/images/01-terraform-init-fmt-validate.png)
 
 ---
 
@@ -452,7 +452,7 @@ The deployment completed successfully with:
 Apply complete! Resources: 6 added, 0 changed, 0 destroyed.
 ```
 
-![Basic VPC Terraform Apply](./images/02-vpc-basic-terraform-apply.png)
+![Basic VPC Terraform Apply](./terraform-s3-demo/images/02-vpc-basic-terraform-apply.png)
 
 ---
 
@@ -479,7 +479,7 @@ The deployment completed successfully with:
 Apply complete! Resources: 10 added, 0 changed, 0 destroyed.
 ```
 
-![Public and Private VPC Terraform Apply](./images/03-vpc-public-private-terraform-apply.png)
+![Public and Private VPC Terraform Apply](./terraform-s3-demo/images/03-vpc-public-private-terraform-apply.png)
 
 This demonstrates how Terraform can provision an entire network architecture from declarative configuration.
 
@@ -1210,15 +1210,15 @@ The following screenshots provide practical evidence of the Terraform work compl
 
 ### Terraform Initialization, Formatting and Validation
 
-![Terraform Init, Format and Validate](./images/01-terraform-init-fmt-validate.png)
+![Terraform Init, Format and Validate](./terraform-s3-demo/images/01-terraform-init-fmt-validate.png)
 
 ### Basic VPC Terraform Deployment
 
-![Basic VPC Terraform Apply](./images/02-vpc-basic-terraform-apply.png)
+![Basic VPC Terraform Apply](./terraform-s3-demo/images/02-vpc-basic-terraform-apply.png)
 
 ### Public and Private VPC Terraform Deployment
 
-![Public and Private VPC Terraform Apply](./images/03-vpc-public-private-terraform-apply.png)
+![Public and Private VPC Terraform Apply](./terraform-s3-demo/images/03-vpc-public-private-terraform-apply.png)
 
 ---
 
@@ -1260,7 +1260,7 @@ These services form an important foundation for designing, deploying, and managi
 
 ## Notes
 
-- All images are referenced from `./images/` — make sure that folder is committed to the repository, otherwise the image links will break on GitHub.
+- All images are referenced from `./terraform-s3-demo/images/` — make sure that folder is committed to the repository, otherwise the image links will break on GitHub.
 - Terraform state files (`.terraform/`, `terraform.tfstate`, `terraform.tfstate.backup`, `.terraform.lock.hcl`) are local generated artifacts and should not be committed to the repository.
 - Code fences, tables, and headings have been checked for valid GitHub Markdown rendering.
 
