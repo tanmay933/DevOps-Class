@@ -932,22 +932,11 @@ However, **EC2 is not part of the implemented Session 19 mini-project**, so it i
 
 # 27. Screenshots and Evidence
 
-No AWS deployment screenshots are included because no AWS resources were actually created during this session.
+![Terraform Apply Output - Screenshot 127](<Screenshots/Screenshot (127).png>)
 
-No screenshots of Terraform source files are required because the Terraform configuration itself is already part of the project.
+---
 
-The documentation therefore focuses on:
-
-- The actual Terraform configuration
-- Infrastructure architecture
-- Terraform concepts
-- Terraform command workflow
-- Expected command behavior
-- Expected AWS resources
-- Terraform state and dependencies
-
-This avoids presenting simulated output as actual execution evidence.
-
+![Terraform Apply Output - Screenshot 128](<Screenshots/Screenshot (128).png>)
 ---
 
 # 28. Key Learnings
@@ -997,4 +986,5 @@ The session provides the foundation for extending the infrastructure with servic
 ## Author
 
 **Tanmay Mittal**
+
 Roll No.: **24BCS10491**
